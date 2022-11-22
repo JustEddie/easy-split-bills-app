@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import Home from "./Home";
+import Login from "./Login";
+import Signup from "./Signup";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -41,11 +44,14 @@ class App extends Component {
     return (
       <div>
         <BrowserRouter>
-          <Switch>
-            <Route exact path="/" component={} />
-            <Route exact path="/login" component={} />
-            <Route exact path="/signup" component={} />
-          </Switch>
+          <Link className="link" to={"/"}>
+            <h1 className="logo">Easy Split Bills App</h1>
+          </Link>
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route exact path="/login" element={<Login />} />
+            <Route exact path="/signup" element={<Signup />} />
+          </Routes>
         </BrowserRouter>
       </div>
     );
