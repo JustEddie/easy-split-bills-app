@@ -1,26 +1,9 @@
-// import React from 'react';
-// import {Link} from 'react-router-dom'
-// const Home = () => {
-//   return (
-//     <div>
-//       <Link to='/login'>Log In</Link>
-//       <br></br>
-//       <Link to='/signup'>Sign Up</Link>
-//       <br></br>
-//       <button onClick={() => this.handleLogoutClick()}>Logout</button>
-      
-//     </div>
-//   );
-// };
-// export default Home;
-
-
-
 import React, { Component } from "react";
 import axios from "axios";
 
 import Signup from "./auth/Signup";
 import Login from "./auth/Login";
+import { render } from "react-dom";
 
 export default class Home extends Component {
   constructor(props) {
@@ -32,29 +15,36 @@ export default class Home extends Component {
 
   handleSuccessfulAuth(data) {
     this.props.handleLogin(data);
-    // this.props.history.push("/dashboard");
   }
 
   handleLogoutClick() {
     axios
       .delete("http://localhost:3001/logout", { withCredentials: true })
-      .then(response => {
+      .then((response) => {
         this.props.handleLogout();
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("logout error", error);
       });
   }
 
   render() {
-    return (
-      <div>
-        <h1>Home</h1>
-        <h1>Status: {this.props.loginStatus}</h1>
-        <button onClick={() => this.handleLogoutClick()}>Logout</button>
-        <Signup handleSuccessfulAuth={this.handleSuccessfulAuth} />
-        <Login handleSuccessfulAuth={this.handleSuccessfulAuth} />
-      </div>
-    );
+    const isLoggedIn = this.props.isLoggedIn;
+
+    if (isLoggedIn) {
+      return (
+        <div>
+          <h1>Home</h1>
+          <h1>Status: {isLoggedIn}</h1>
+          <button onClick={() => this.handleLogoutClick()}>Logout</button>
+        </div>
+      );
+    } else
+      return (
+        <div>
+          <Signup handleSuccessfulAuth={this.handleSuccessfulAuth} />
+          <Login handleSuccessfulAuth={this.handleSuccessfulAuth} />
+        </div>
+      );
   }
 }

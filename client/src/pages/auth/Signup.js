@@ -30,7 +30,7 @@ class Signup extends Component {
       .post("http://localhost:3001/users", { user }, { withCredentials: true })
       .then((response) => {
         if (response.data.status === "created") {
-          this.props.handleLogin(response.data);
+          this.props.handleSuccessfulAuth(response.data);
           this.redirect();
         } else {
           this.setState({

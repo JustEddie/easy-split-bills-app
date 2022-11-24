@@ -19,7 +19,7 @@ class Login extends Component {
   };
   handleSubmit = (event) => {
     event.preventDefault();
-    const { email, password } = this.state
+    const { email, password } = this.state;
     let user = {
       email: email,
       password: password,
@@ -29,8 +29,12 @@ class Login extends Component {
       .post("http://localhost:3001/login", { user }, { withCredentials: true })
       .then((response) => {
         if (response.data.logged_in) {
-          this.props.handleLogin(response.data);
-          this.redirect();
+          this.props.handleSuccessfulAuth(response.data);
+          // this.redirect();
+          this.setState({
+            username: response.data.user.username
+          });
+          console.log(this.state)
         } else {
           this.setState({
             errors: response.data.errors,
@@ -39,9 +43,9 @@ class Login extends Component {
       })
       .catch((error) => console.log("api errors:", error));
   };
-  redirect = () => {
-    this.props.history.push("/");
-  };
+  // redirect = () => {
+  //   this.props.history.push("/");
+  // };
   handleErrors = () => {
     return (
       <div>
@@ -54,8 +58,8 @@ class Login extends Component {
     );
   };
   render() {
-    const { username, email, password } = this.state
-    return(
+    const { email, password } = this.state;
+    return (
       <div>
         <h1>Log In</h1>
         <form onSubmit={this.handleSubmit}>
@@ -76,9 +80,6 @@ class Login extends Component {
           <button placeholder="submit" type="submit">
             Log In
           </button>
-          <div>
-            or <Link to="/signup">sign up</Link>
-          </div>
         </form>
       </div>
     );
