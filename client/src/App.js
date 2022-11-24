@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import Home from "./Home";
-import Login from "./Login";
-import Signup from "./Signup";
+import Home from "./pages/Home";
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Signup";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -48,9 +48,21 @@ class App extends Component {
             <h1 className="logo">Easy Split Bills App</h1>
           </Link>
           <Routes>
-            <Route exact path="/" element={<Home />} />
+            {/* <Route exact path="/" element={<Home />} />
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/signup" element={<Signup />} />
+            <Route exact path="/logout" element={<Home />}/> */}
+            <Route
+              exact
+              path="/"
+              element={
+                <Home
+                  handleLogin={this.handleLogin}
+                  handleLogout={this.handleLogout}
+                  loginStatus={this.state.loginStatus}
+                />
+              }
+            />
           </Routes>
         </BrowserRouter>
       </div>
