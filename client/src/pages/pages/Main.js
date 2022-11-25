@@ -1,49 +1,83 @@
 import React, { useEffect, useState, Component } from "react";
 import axios from "axios";
+import { Table, message, Popconfirm } from "antd";
 
 class Main extends Component {
-  //   constructor(props) {
-  //     super(props);
-  //     this.state = {
-  //         projects: []
-  //     };
-  //   }
-  // const [projects, setProjects] = useState([]);
+  constructor(props) {
+    super(props);
+    this.state = {
+      projects: [],
+    };
+  }
+  columns = [
+    {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+    },
+    {
+      title: "",
+      key: "action",
+      render: (_text, record) => (
+        <Popconfirm
+          title="Are you sure to delete this project?"
+          onConfirm={() => this.deleteProject(record.id)}
+          okText="Yes"
+          cancelText="No"
+        >
+          <a href="#" type="danger">
+            Delete{" "}
+          </a>
+        </Popconfirm>
+      ),
+    },
+  ];
 
-  state = { projects: [] };
+  //   const
+  //   state = { projects: [] };
+
+  componentDidMount() {
+    this.loadProjects();
+  }
 
   loadProjects = () => {
-    // event.preventDefault();
-
-    const { projects } = this.state;
-    axios.get("http:localhost:3001/projects").then((response) => {
-      console.log(response);
-    });
-    // const url = "api/v1/beers/index";
-    // fetch(url)
-    //   .then((data) => {
-    //     if (data.ok) {
-    //       return data.json();
-    //     }
-    //     throw new Error("Network error.");
-    //   })
-    //   .then((data) => {
-    //     data.forEach((beer) => {
-    //       const newEl = {
-    //         key: beer.id,
-    //         id: beer.id,
-    //         brand: beer.brand,
-    //         style: beer.style,
-    //         country: beer.country,
-    //         quantity: beer.quantity,
-    //       };
-
-    //       this.setState((prevState) => ({
-    //         beers: [...prevState.beers, newEl],
-    //       }));
-    //     });
-    //   })
-    //   .catch((err) => message.error("Error: " + err));
+    axios
+      .get("http://localhost:3001/projects/", { withCredentials: true })
+      .then((response) => {
+        if (response.data.projects) {
+          response.data.projects.forEach((project) => {
+            const newElement = {
+              key: project.id,
+              id: project.id,
+              title: project.title,
+              //     //   userName: project.user.username,
+              //       userId: project.user_id,
+            };
+            //   response.data.projects
+            this.setState((prevState) => ({
+              projects: [...prevState.projects, newElement],
+            }));
+          });
+          console.log(response.data.projects);
+        } else {
+          console.log("no project found");
+        }
+      })
+      .catch((error) => console.log("api errors:", error));
   };
+  render() {
+    return (
+      <div>
+        why
+        <Table
+          className="table-striped-rows"
+          dataSource={this.state.projects}
+          columns={this.columns}
+          pagination={{ pageSize: 5 }}
+        />
+        {/* <AddBeerModal reloadBeers={this.reloadBeers} /> */}
+      </div>
+    );
+  }
 }
 export default Main;
