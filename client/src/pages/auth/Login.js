@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -34,14 +34,17 @@ class Login extends Component {
           this.setState({
             username: response.data.user.username
           });
-          console.log(this.state)
         } else {
           this.setState({
             errors: response.data.errors,
           });
+          console.log(this.state)
         }
       })
-      .catch((error) => console.log("api errors:", error));
+      .then(console.log(this.state))
+      .catch((error) => console.log("login errors:", error));
+      event.preventDefault();
+
   };
   // redirect = () => {
   //   this.props.history.push("/");

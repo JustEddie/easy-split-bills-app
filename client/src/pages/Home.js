@@ -3,8 +3,7 @@ import axios from "axios";
 
 import Signup from "./auth/Signup";
 import Login from "./auth/Login";
-import { render } from "react-dom";
-
+import Main from "./pages/Main";
 export default class Home extends Component {
   constructor(props) {
     super(props);
@@ -35,8 +34,9 @@ export default class Home extends Component {
       return (
         <div>
           <h1>Home</h1>
-          <h1>Status: {isLoggedIn}</h1>
+          <h1>Logged in as: {this.props.isLoggedIn}</h1>
           <button onClick={() => this.handleLogoutClick()}>Logout</button>
+          <Main  />
         </div>
       );
     } else
