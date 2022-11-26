@@ -58,13 +58,33 @@ class Main extends Component {
               projects: [...prevState.projects, newElement],
             }));
           });
-          console.log(response.data.projects);
+          // console.log(response.data.projects);
         } else {
           console.log("no project found");
         }
       })
       .catch((error) => console.log("api errors:", error));
   };
+
+  reloadProjects = () => {
+    this.setState({ projects: [] });
+    this.loadProjects();
+  }
+  deleteProject = (id) => {
+
+    axios
+    .delete(`http://localhost:3001/projects/${id}`)
+    .then((response) =>{
+        // console.log(response)
+        if(response.status === 200) {
+          this.reloadProjects();
+          // return response.json();
+        } else {
+          throw new Error("network error: " + response.status)
+        }})
+    .catch((error) => console.log("api errors:", error));
+  }
+
   render() {
     return (
       <div>
