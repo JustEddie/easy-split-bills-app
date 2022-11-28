@@ -1,5 +1,6 @@
 class User < ApplicationRecord
     has_many :projects
+    # has_many :members, through :project
 
 
     has_secure_password
