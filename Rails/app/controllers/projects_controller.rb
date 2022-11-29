@@ -19,7 +19,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1 or /projects/1.json
   def show
-    @projects = Project.find(params[:id])
+    @project = Project.find(params[:id])
     if @project 
       render json: {
         project: @project

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, Component } from "react";
 import axios from "axios";
 import { Table, message, Popconfirm } from "antd";
+import NewProject from "./NewProject";
 
 class Main extends Component {
   constructor(props) {
@@ -88,14 +89,13 @@ class Main extends Component {
   render() {
     return (
       <div>
-        why
         <Table
           className="table-striped-rows"
           dataSource={this.state.projects}
           columns={this.columns}
           pagination={{ pageSize: 5 }}
         />
-        {/* <AddBeerModal reloadBeers={this.reloadBeers} /> */}
+        <NewProject reloadProjects={this.reloadProjects} />
       </div>
     );
   }

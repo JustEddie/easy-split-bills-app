@@ -1,27 +1,29 @@
 import { Button, Form, Input, Modal, Select } from "antd";
 import React from "react";
+import axios from "axios";
 
-const { Option } = Select;
+// const { Option } = Select;
 
 class NewProject extends React.Component {
   formRef = React.createRef();
   state = {
-    visible: false,
+    open: false,
   };
 
   onFinish = (values) => {
+    let project = { title: values.title}
     axios
-      .post(`http://localhost:3001/projects/new`)
+      .post(`http://localhost:3001/projects`, {project}, {withCredentials: true})
       .then((response) => {
-        // console.log(response)
+        console.log(response)
 
-        if (response.status === 200) {
-          //   this.reloadProjects();
-          // return response.json();
-          this.handleCancel();
-        } else {
-          throw new Error("network error: " + response.status);
-        }
+        // if (response.status === 'created') {
+        //     this.reloadProjects();
+        //   // return response.json();
+        //   this.handleCancel();
+        // } else {
+        //   throw new Error("network error: " + response.status);
+        // }
       })
       .then(() => {
         this.props.reloadProjects();
@@ -31,13 +33,13 @@ class NewProject extends React.Component {
 
   showModal = () => {
     this.setState({
-      visible: true,
+      open: true,
     });
   };
 
   handleCancel = () => {
     this.setState({
-      visible: false,
+      open: false,
     });
   };
 
@@ -50,11 +52,26 @@ class NewProject extends React.Component {
 
         <Modal
           title="Add New Project ..."
-          visible={this.state.visible}
+          open={this.state.open}
           onCancel={this.handleCancel}
           footer={null}
         >
-          <Form>
+          <Form ref={this.formRef} onFinish={this.onFinish}>
+            <Form.Item name="title" label="Title">
+              <Input placeholder="title" />
+            </Form.Item>
+
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+            {/* <Form.Item>
+              <Input />
+            </Form.Item> */}
+          </Form>
+
+          {/* <Form>
             <Form.Item>
               <Input />
             </Form.Item>
@@ -62,7 +79,7 @@ class NewProject extends React.Component {
             <Form.Item>
               <Input />
             </Form.Item>
-          </Form>
+          </Form> */}
         </Modal>
       </>
     );
