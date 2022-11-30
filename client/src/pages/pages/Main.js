@@ -93,7 +93,7 @@ class Main extends Component {
           className="table-striped-rows"
           dataSource={this.state.projects}
           columns={this.columns}
-          pagination={{ pageSize: 5 }}
+          pagination={{ pageSize: 10 }}
         />
         <NewProject reloadProjects={this.reloadProjects} />
       </div>

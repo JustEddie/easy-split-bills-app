@@ -58,15 +58,6 @@ class ProjectsController < ApplicationController
         errors: @project.errors.full_messages
       }
     end
-    # respond_to do |format|
-    #   if @project.save
-    #     format.html { redirect_to project_url(@project), notice: "Project was successfully created." }
-    #     format.json { render :show, status: :created, location: @project }
-    #   else
-    #     format.html { render :new, status: :unprocessable_entity }
-    #     format.json { render json: @project.errors, status: :unprocessable_entity }
-    #   end
-    # end
   end
 
   # PATCH/PUT /projects/1 or /projects/1.json

@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resources :projects
-  # resources :users, only: %i[create show index]
+  resources :members
+  resources :bills
+  resources :debts
   post '/login',    to: 'sessions#create'
   delete '/logout',   to: 'sessions#destroy'
   get '/logged_in', to: 'sessions#is_logged_in?'
