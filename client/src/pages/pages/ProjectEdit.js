@@ -4,8 +4,9 @@ import axios from "axios";
 import NewMember from "./NewMember";
 import Member from "./Member";
 
-// const { Option } = Select;
 
+// get project then patch with project.id
+// member edit button
 class NewProject extends React.Component {
   formRef = React.createRef();
   state = {

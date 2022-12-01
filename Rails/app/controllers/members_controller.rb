@@ -3,6 +3,21 @@ class MembersController < ApplicationController
     @member = Member.new
   end
 
+  def index
+    @members = Member.all
+    if @members
+      render json: {
+        status: 200,
+        members: @members
+      }
+    else
+      {
+        status: 500,
+        error: ['members not found']
+      }
+    end
+  end
+
   def create
     @user = @project.user
     @member = Member.new(member_params)

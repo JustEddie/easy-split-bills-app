@@ -2,6 +2,7 @@ import React, { useEffect, useState, Component } from "react";
 import axios from "axios";
 import { Table, message, Popconfirm } from "antd";
 import NewProject from "./NewProject";
+import Project from "./Project";
 
 class Main extends Component {
   constructor(props) {
@@ -15,6 +16,13 @@ class Main extends Component {
       title: "Title",
       dataIndex: "title",
       key: "title",
+    },
+    {
+      title: "",
+      key: "action",
+      render: (_text,record) =>(
+        <Project project_id={record.id}/>
+      )
     },
     {
       title: "",

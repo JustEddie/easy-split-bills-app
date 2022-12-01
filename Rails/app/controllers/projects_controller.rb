@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: %i[ show edit update destroy ]
+  before_action :set_project, only: %i[show edit update destroy]
 
   # GET /projects or /projects.json
   def index
@@ -20,8 +20,9 @@ class ProjectsController < ApplicationController
   # GET /projects/1 or /projects/1.json
   def show
     @project = Project.find(params[:id])
-    if @project 
+    if @project
       render json: {
+        status: 200,
         project: @project
       }
     else
@@ -38,14 +39,12 @@ class ProjectsController < ApplicationController
   end
 
   # GET /projects/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /projects or /projects.json
   def create
     @user = User.find_by(id: session[:user_id])
     @project = @user.projects.build(project_params)
-
 
     if @project.save
       render json: {
@@ -75,6 +74,9 @@ class ProjectsController < ApplicationController
 
   # DELETE /projects/1 or /projects/1.json
   def destroy
+    @project.members.each do |member|
+      member.destroy
+    end
     @project.destroy
 
     render json: {
@@ -88,13 +90,14 @@ class ProjectsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_project
-      @project = Project.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def project_params
-      params.require(:project).permit(:title, :user_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_project
+    @project = Project.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def project_params
+    params.require(:project).permit(:title, :user_id)
+  end
 end
