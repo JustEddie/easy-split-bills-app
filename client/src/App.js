@@ -12,6 +12,7 @@ class App extends Component {
   }
   componentDidMount() {
     this.loginStatus();
+    console.log("componentDidMount")
   }
   loginStatus = () => {
     axios

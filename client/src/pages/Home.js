@@ -14,6 +14,7 @@ export default class Home extends Component {
 
   handleSuccessfulAuth(data) {
     this.props.handleLogin(data);
+    console.log("insideSuccessfulAuth")
   }
 
   handleLogoutClick() {
