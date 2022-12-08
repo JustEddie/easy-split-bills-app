@@ -29,6 +29,22 @@ class Main extends Component {
       key: "action",
       render: (_text, record) => (
         <Popconfirm
+          title="Are you sure to make change to this project?"
+          onConfirm={() => this.deleteProject(record.id)}
+          okText="Yes"
+          cancelText="No"
+        >
+          <a href="#" type="danger">
+            Edit{" "}
+          </a>
+        </Popconfirm>
+      ),
+    },
+    {
+      title: "",
+      key: "action",
+      render: (_text, record) => (
+        <Popconfirm
           title="Are you sure to delete this project?"
           onConfirm={() => this.deleteProject(record.id)}
           okText="Yes"
@@ -93,6 +109,7 @@ class Main extends Component {
         }})
     .catch((error) => console.log("api errors:", error));
   }
+
 
   render() {
     return (

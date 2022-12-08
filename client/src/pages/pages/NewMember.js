@@ -10,22 +10,29 @@ class NewMember extends React.Component {
     open: false,
   };
 
+  // onMemberFormFinish = (values) => {
+  //   let member = {
+  //     member_name: values.member_name,
+  //     project_id: this.props.projectId,
   onMemberFormFinish = (values) => {
     let member = {
       member_name: values.member_name,
-    //   project_id:???
-
     };
-
-    axios
-    .post('http://localhost:3001/members',{ member }, {withCredentials: true})
-    .then((response) => {
-        if (response.status === 200) {
-            this.props.reloadMembers();
-            this.handleCancel();
-        }
-    })
+    this.props.memberState.push(member);
+    // this.state.members.push(member);
+    this.props.loadMembers();
   };
+  //   };
+
+  //   axios
+  //   .post('http://localhost:3001/members',{ member }, {withCredentials: true})
+  //   .then((response) => {
+  //       if (response.status === 200) {
+  //           this.props.reloadMembers();
+  //           this.handleCancel();
+  //       }
+  //   })
+  // };
 
   showModal = () => {
     this.setState({

@@ -7,7 +7,7 @@ import Member from "./Member";
 
 // get project then patch with project.id
 // member edit button
-class NewProject extends React.Component {
+class ProfectEdit extends React.Component {
   formRef = React.createRef();
   state = {
     open: false,
@@ -20,8 +20,8 @@ class NewProject extends React.Component {
     };
 
     axios
-      .post(
-        `http://localhost:3001/projects`,
+      .patch(
+        `http://localhost:3001/projects${}`,
         { project },
         { withCredentials: true }
       )
@@ -59,11 +59,11 @@ class NewProject extends React.Component {
     return (
       <>
         <Button type="primary" onClick={this.showModal}>
-          Create New Project
+          Edit Project
         </Button>
 
         <Modal
-          title="Add New Project ..."
+          title="Edit Project ..."
           open={this.state.open}
           onCancel={this.handleCancel}
           footer={null}
@@ -87,4 +87,4 @@ class NewProject extends React.Component {
   }
 }
 
-export default NewProject;
+export default ProfectEdit;

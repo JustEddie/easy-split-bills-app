@@ -19,7 +19,7 @@ class MembersController < ApplicationController
   end
 
   def create
-    @user = @project.user
+    # @user = @project.user
     @member = Member.new(member_params)
     if @member.save
       render json: {

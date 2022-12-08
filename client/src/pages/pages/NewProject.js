@@ -10,13 +10,18 @@ class NewProject extends React.Component {
   formRef = React.createRef();
   state = {
     open: false,
+    members: [],
+    projectId: "",
   };
 
-  
   onProjectFormFinish = (values) => {
     let project = {
       title: values.title,
     };
+    // let member = {
+    //   member_name: values.member_name,
+    // }
+    // response.data.project.id
 
     axios
       .post(
@@ -27,7 +32,9 @@ class NewProject extends React.Component {
       .then((response) => {
         if (response.status === 200) {
           this.props.reloadProjects();
+          this.setState({members: []});
           this.handleCancel();
+          this.setState.projectId = `${response.data.project.id}`;
         } else {
           throw new Error("network error: " + response.status);
         }
@@ -35,11 +42,8 @@ class NewProject extends React.Component {
       .catch((error) => console.log("api errors:", error));
   };
 
-  onMemberFormFinish = (values) => {
-    let member = {
-      member_name: values.member_name,
-    };
-    let bill = {};
+  loadMembers = () => {
+    console.log(this.state.members);
   };
 
   showModal = () => {
@@ -53,6 +57,35 @@ class NewProject extends React.Component {
       open: false,
     });
   };
+  // loadMembers = () => {
+  //   axios
+  //     .get("http://localhost:3001/members/", { withCredentials: true })
+  //     .then((response) => {
+  //       if (response.data.members.project_id === this.state.projectId) {
+  //         response.data.members.forEach((member) => {
+  //           const newElement = {
+  //             key: member.id,
+  //             id: member.id,
+  //             title: member.title,
+  //             //     //   userName: member.user.username,
+  //             //       userId: member.user_id,
+  //           };
+  //           //   response.data.members
+  //           this.setState((prevState) => ({
+  //             members: [...prevState.members, newElement],
+  //           }));
+  //         });
+  //         // console.log(response.data.members);
+  //       } else {
+  //         console.log("no member found");
+  //       }
+  //     })
+  //     .catch((error) => console.log("api errors:", error));
+  // };
+  // reloadMembers = () => {
+  //   this.setState({ members: [] });
+  //   this.loadMembers();
+  // }
 
   render() {
     return (
@@ -71,7 +104,12 @@ class NewProject extends React.Component {
             <Form.Item name="title" label="Title">
               <Input placeholder="title" />
             </Form.Item>
-            <NewMember />
+            <NewMember
+              // projectId={this.projectId}
+              // onFinish={this.onProjectFormFinish}
+              loadMembers={this.loadMembers}
+              memberState={this.state.members}
+            />
 
             <Form.Item>
               <Button type="primary" htmlType="submit">
