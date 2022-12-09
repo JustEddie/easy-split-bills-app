@@ -2,7 +2,7 @@ import { Button, Form, Input, Modal, Select } from "antd";
 import React from "react";
 import axios from "axios";
 
-// const { Option } = Select;
+
 
 class NewMember extends React.Component {
   formRef = React.createRef();

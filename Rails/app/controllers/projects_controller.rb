@@ -45,11 +45,14 @@ class ProjectsController < ApplicationController
   def create
     @user = User.find_by(id: session[:user_id])
     @project = @user.projects.build(project_params)
-
-    if @project.save
+    # @member = @project.members.build(member_params)
+    # @members = @project.members.find(project_id: @project.id)
+    # && @member.save
+    if @project.save 
       render json: {
         status: :created,
-        project: @project
+        project: @project,
+        # members: @members
       }
     else
       render json: {
@@ -99,5 +102,9 @@ class ProjectsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def project_params
     params.require(:project).permit(:title, :user_id)
+  end
+
+  def member_params
+    params.require(:member).permit(:member_name, :email, :project_id)
   end
 end
