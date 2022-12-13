@@ -2,8 +2,8 @@ import { Button, Form, Input, Modal, Space } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import React from "react";
 import axios from "axios";
-import NewMember from "./NewMember";
-import Member from "./Member";
+// import NewMember from "./NewMember";
+// import Member from "./Member";
 
 // idea : new project form has new members inputs with new bills inputs
 // project create controller has members create with project id and bills create with member id
@@ -22,65 +22,52 @@ class NewProject extends React.Component {
   onProjectFormFinish = (values) => {
     let project = {
       title: values.title,
+      members: [],
     };
-
-    // let member = this.state.members.forEach((member) => {member})
-
-    // let member = {
-    //   member_name: values.member_name,
+    // let bills = [];
+    for (const arr of values.members) {
+      this.setState((prevState) => ({
+        members: [...prevState.members, arr.member],
+      }));
+      let member = {
+        member_name: arr.member,
+      };
+      project.members.push(member);
+    }
+    // for (const arr of values.bills) {
+    //   this.setState((prevState) => ({
+    //     bills: [...prevState.bills, arr.bill],
+    //   }));
     // }
-    // response.data.project.id
-
-    values.members.map(
-      (element) => {
-        this.setState((prevState) => ({
-          members : [...prevState.members],
-          element,
-        }));
-      },
-      () => {
-        console.log(this.state);
-      }
-    );
+    // for (const bill of this.state.bills) {
+    //   bills.push(bill);
+    // }
 
     axios
       .post(
         `http://localhost:3001/projects`,
+        // { project },
+        // { members },
         { project },
-        // { member },
         { withCredentials: true }
       )
       .then((response) => {
         if (response.status === 200) {
-          //trying to put members in this.state.members
-          // let mems = [];
-          // values.members.forEach(element => {
-          //   mems.push(element.member);
+          // this.setState({ projectId: `${response.project.project.id}` }, () => {
+          //   console.log(this.state);
           // });
-          // mems.forEach(element => {
-          // this.setState(prevState => ({members: [...prevState.members],element}), () => {
-          //   // console.log(mems)
-          //   console.log(this.state.members)
-          // })});
-
-          this.setState({ projectId: `${response.data.project.id}` }, () => {
-            console.log(this.state);
-          });
-
-          // console.log(response.data.project.id);
           this.props.reloadProjects();
-          this.setState({ members: [] });
           this.handleCancel();
+          console.log(project.members);
         } else {
           throw new Error("network error: " + response.status);
         }
       })
+      // .then(() => {
+      //   this.setState({members: []});
+      // })
       .catch((error) => console.log("api errors:", error));
   };
-
-  // loadMembers = () => {
-  //   console.log(this.state.members);
-  // };
 
   showModal = () => {
     this.setState({

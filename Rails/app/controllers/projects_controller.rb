@@ -1,5 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: %i[show edit update destroy]
+  attr_accessor :members
 
   # GET /projects or /projects.json
   def index
@@ -45,14 +46,18 @@ class ProjectsController < ApplicationController
   def create
     @user = User.find_by(id: session[:user_id])
     @project = @user.projects.build(project_params)
-    # @member = @project.members.build(member_params)
+    # @members.each do |member|
+    #   member = @project.members.build(member_name: member.member_name)
+    # end
+    logger.debug "#{@members}"
+    # @member = Member.build(member_name: member_name, project_id: @project.id)
     # @members = @project.members.find(project_id: @project.id)
-    # && @member.save
-    if @project.save 
+    # && member.save
+    if @project.save
       render json: {
         status: :created,
         project: @project,
-        # members: @members
+        member: @member
       }
     else
       render json: {
@@ -101,7 +106,7 @@ class ProjectsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def project_params
-    params.require(:project).permit(:title, :user_id)
+    params.require(:project).permit(:title, :user_id, {members: [:member_name]})
   end
 
   def member_params
