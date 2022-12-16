@@ -20,10 +20,12 @@ class MembersController < ApplicationController
 
   def create
     # @user = @project.user
+    
     @member = Member.new(member_params)
     if @member.save
       render json: {
-        status: :created
+        status: :created,
+        member: @member
       }
     else
       render json: {

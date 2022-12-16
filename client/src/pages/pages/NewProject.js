@@ -22,18 +22,24 @@ class NewProject extends React.Component {
   onProjectFormFinish = (values) => {
     let project = {
       title: values.title,
-      members: [],
     };
+    let mems = [];
     // let bills = [];
     for (const arr of values.members) {
-      this.setState((prevState) => ({
-        members: [...prevState.members, arr.member],
-      }));
+      //   this.setState((prevState) => {
+      //    debugger;
+      //     return {
+      //     members: [...prevState.members, arr.member],
+      // }});
+      // console.log(values.members)
+
       let member = {
         member_name: arr.member,
+        project_id: "",
       };
-      project.members.push(member);
+      mems.push(member);
     }
+    // this.setState((prevState) => ())
     // for (const arr of values.bills) {
     //   this.setState((prevState) => ({
     //     bills: [...prevState.bills, arr.bill],
@@ -46,19 +52,30 @@ class NewProject extends React.Component {
     axios
       .post(
         `http://localhost:3001/projects`,
-        // { project },
         // { members },
         { project },
         { withCredentials: true }
       )
       .then((response) => {
         if (response.status === 200) {
-          // this.setState({ projectId: `${response.project.project.id}` }, () => {
+          // this.setState({ projectId: `${response.project.id}` }, () => {
           //   console.log(this.state);
           // });
-          this.props.reloadProjects();
-          this.handleCancel();
-          console.log(project.members);
+          // console.log(response.data.project.id)
+          mems.forEach(
+            (member) => {
+              member.project_id = `${response.data.project.id}`;
+            },
+            () => {
+              // console.log(response.project)
+              console.log(mems);
+              // axios.post('http://localhost:3001/members', {member }, {withCredentials: true})
+            }
+          );
+          // console.log(response.project)
+          // this.props.reloadProjects();
+          // this.handleCancel();
+          // console.log(project.members);
         } else {
           throw new Error("network error: " + response.status);
         }
@@ -66,7 +83,30 @@ class NewProject extends React.Component {
       // .then(() => {
       //   this.setState({members: []});
       // })
-      .catch((error) => console.log("api errors:", error));
+      // .catch((error) => console.log("api errors:", error));
+      .then(() => {setTimeout(console.log("timeout"),2000)})
+      .then(() => {
+        mems.forEach((member) => {
+          axios
+            .post(
+              "http://localhost:3001/members",
+              { member },
+              { withCredentials: true }
+            )
+            .then((response) => {
+              if (response.status === 200) {
+                this.props.reloadProjects();
+                this.handleCancel();
+              } else {
+                throw new Error("network error: " + response.status);
+              }
+            })
+            .then(() => {
+              this.setState({members: []});
+            })
+            .catch((error) => console.log("api errors:", error));
+        });
+      });
   };
 
   showModal = () => {
